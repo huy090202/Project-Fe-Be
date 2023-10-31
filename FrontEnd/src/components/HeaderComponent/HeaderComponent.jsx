@@ -23,7 +23,7 @@ import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 const HeaderComponent = () => {
   return (
     <div>
-      <WapperHeader gutter={16}>
+      <WapperHeader>
         <Col span={6}>
           <WapperTextHeader>PhamDangHuy</WapperTextHeader>
         </Col>
