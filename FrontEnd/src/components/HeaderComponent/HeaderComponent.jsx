@@ -4,10 +4,10 @@ import { Col } from "antd";
 
 //import css
 import {
-  WapperHeader,
-  WapperTextHeader,
-  WapperAccountHeader,
-  WapperTextHeaderSmall,
+  WrapperHeader,
+  WrapperTextHeader,
+  WrapperAccountHeader,
+  WrapperTextHeaderSmall,
 } from "./style";
 
 // import icons
@@ -23,9 +23,9 @@ import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 const HeaderComponent = () => {
   return (
     <div>
-      <WapperHeader>
+      <WrapperHeader>
         <Col span={6}>
-          <WapperTextHeader>PhamDangHuy</WapperTextHeader>
+          <WrapperTextHeader>PhamDangHuy</WrapperTextHeader>
         </Col>
         <Col span={12}>
           <ButtonInputSearch
@@ -39,22 +39,22 @@ const HeaderComponent = () => {
           span={6}
           style={{ display: "flex", gap: "20px", alignItems: "center" }}
         >
-          <WapperAccountHeader>
+          <WrapperAccountHeader>
             <UserOutlined style={{ fontSize: "30px" }} />
             <div>
-              <WapperTextHeaderSmall>Đăng nhập/Đăng ký</WapperTextHeaderSmall>
+              <WrapperTextHeaderSmall>Đăng nhập/Đăng ký</WrapperTextHeaderSmall>
               <div>
-                <WapperTextHeaderSmall>Tài khoản</WapperTextHeaderSmall>
+                <WrapperTextHeaderSmall>Tài khoản</WrapperTextHeaderSmall>
                 <CaretDownOutlined />
               </div>
             </div>
-          </WapperAccountHeader>
+          </WrapperAccountHeader>
           <div>
             <ShoppingCartOutlined style={{ fontSize: "30px", color: "#fff" }} />
-            <WapperTextHeaderSmall>Giỏ hàng</WapperTextHeaderSmall>
+            <WrapperTextHeaderSmall>Giỏ hàng</WrapperTextHeaderSmall>
           </div>
         </Col>
-      </WapperHeader>
+      </WrapperHeader>
     </div>
   );
 };
