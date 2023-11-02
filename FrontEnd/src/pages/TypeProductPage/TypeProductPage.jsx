@@ -1,32 +1,42 @@
 import React from "react";
 import NavBarComponent from "../../components/NavbarComponent/NavbarComponent";
 import CardComponent from "../../components/CardComponent/CardComponent";
-import { Col, Row } from "antd";
+import { Col, Pagination, Row } from "antd";
+import { WrapperNavbar, WrapperProducts } from "./style";
 
 const TypeProductPage = () => {
+  const onChange = () => {};
   return (
-    <Row
-      style={{
-        padding: "10px 120px 0",
-        backgroundColor: "#efefef",
-        flexWrap: "nowrap",
-      }}
-    >
-      <Col
-        span={4}
+    <div style={{ padding: "0 120px ", backgroundColor: "#efefef" }}>
+      <Row
         style={{
-          backgroundColor: "#fff",
-          marginRight: "10px",
-          padding: "10px",
-          borderRadius: "6px",
+          flexWrap: "nowrap",
+          paddingTop: "10px",
         }}
       >
-        <NavBarComponent />
-      </Col>
-      <Col span={20} style={{ backgroundColor: "#fff" }}>
-        <CardComponent />
-      </Col>
-    </Row>
+        <WrapperNavbar span={4}>
+          <NavBarComponent />
+        </WrapperNavbar>
+        <Col span={20}>
+          <WrapperProducts>
+            <CardComponent />
+            <CardComponent />
+            <CardComponent />
+            <CardComponent />
+            <CardComponent />
+            <CardComponent />
+            <CardComponent />
+          </WrapperProducts>
+          <Pagination
+            showQuickJumper
+            defaultCurrent={2}
+            total={500}
+            onChange={onChange}
+            style={{ textAlign: "center", marginTop: "10px" }}
+          />
+        </Col>
+      </Row>
+    </div>
   );
 };
 
