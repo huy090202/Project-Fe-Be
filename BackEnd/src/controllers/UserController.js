@@ -68,4 +68,91 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser, loginUser };
+// Update user
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const data = req.body;
+
+    if (!userId) {
+      return res.status(200).json({
+        status: "error",
+        message: "The userId is required",
+      });
+    }
+
+    const response = await UserService.updateUser(userId, data);
+
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(404).json({
+      error: err,
+    });
+  }
+};
+
+// Delete user
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(200).json({
+        status: "error",
+        message: "The userId is required",
+      });
+    }
+
+    const response = await UserService.deleteUser(userId);
+
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(404).json({
+      error: err,
+    });
+  }
+};
+
+// Get all user
+const getAllUser = async (req, res) => {
+  try {
+    const response = await UserService.getAllUser();
+
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(404).json({
+      error: err,
+    });
+  }
+};
+
+// Get detail user
+const getDetailUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(200).json({
+        status: "error",
+        message: "The userId is required",
+      });
+    }
+
+    const response = await UserService.getDetailUser(userId);
+
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(404).json({
+      error: err,
+    });
+  }
+};
+
+module.exports = {
+  createUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getAllUser,
+  getDetailUser,
+};

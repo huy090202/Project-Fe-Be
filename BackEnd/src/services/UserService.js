@@ -91,4 +91,113 @@ const loginUser = (userLogin) => {
   });
 };
 
-module.exports = { createUser, loginUser };
+// Update user
+const updateUser = (id, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({
+        _id: id,
+      });
+
+      if (checkUser === null) {
+        resolve({
+          status: "Ô sờ kê!",
+          message: "The user is not defined!",
+        });
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
+
+      resolve({
+        status: "Ô sờ kê!",
+        message: "Update user success!",
+        data: updatedUser,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+// Delete user
+const deleteUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({
+        _id: id,
+      });
+
+      if (checkUser === null) {
+        resolve({
+          status: "Ô sờ kê!",
+          message: "The user is not defined!",
+        });
+      }
+
+      await User.findByIdAndDelete(id);
+
+      resolve({
+        status: "Ô sờ kê!",
+        message: "Delete user success!",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+// Get all user
+const getAllUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({
+        _id: id,
+      });
+
+      const allUser = await User.find();
+
+      resolve({
+        status: "Ô sờ kê!",
+        message: "Delete user success!",
+        data: allUser,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+// Get detail user
+const getDetailUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findOne({
+        _id: id,
+      });
+
+      if (user === null) {
+        resolve({
+          status: "Ô sờ kê!",
+          message: "The user is not defined!",
+        });
+      }
+
+      resolve({
+        status: "Ô sờ kê!",
+        message: "Get detail user success!",
+        data: user,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+module.exports = {
+  createUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getAllUser,
+  getDetailUser,
+};
