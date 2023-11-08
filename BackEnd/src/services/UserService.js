@@ -1,6 +1,6 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
-const { genneralAccessToken } = require("./JwtService");
+const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
 
 // Dang ky
 const createUser = (newUser) => {
@@ -74,7 +74,7 @@ const loginUser = (userLogin) => {
       });
 
       // Khi access_token het han thi se cap lai token moi dua vao refresh_token
-      const refresh_token = await genneralAccessToken({
+      const refresh_token = await genneralRefreshToken({
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
       });
@@ -150,10 +150,6 @@ const deleteUser = (id) => {
 const getAllUser = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const checkUser = await User.findOne({
-        _id: id,
-      });
-
       const allUser = await User.find();
 
       resolve({

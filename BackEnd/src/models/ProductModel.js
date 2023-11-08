@@ -8,12 +8,12 @@ const productSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     countInStock: { type: Number, required: true }, // so luong sp con trong kho
     rating: { type: Number, required: true }, // so sao cua sp
-    description: { type: String, required: true }, // mieu ta
+    description: { type: String }, // mieu ta
   },
   {
     timestamps: true,
   }
 );
 
-const Product = mongoose.Schema("Product", productSchema);
+const Product = mongoose.model("Product", productSchema);
 module.exports = Product;
