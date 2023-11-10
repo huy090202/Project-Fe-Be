@@ -4,11 +4,15 @@ const mongoose = require("mongoose");
 const routes = require("./routes");
 const bodyParser = require("body-parser");
 
+// Chinh sach bao mat cua trinh duyet web, de tranh truy cap vao cac domain khac nhau
+const cors = require("cors");
+
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.use(cors());
 app.use(bodyParser.json());
 
 routes(app);

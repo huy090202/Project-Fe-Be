@@ -93,12 +93,19 @@ const getDetailProduct = async (req, res) => {
 // Get all product
 const getAllProduct = async (req, res) => {
   try {
-    const response = await ProductService.getAllProduct();
+    const { limit, page, sort, filter } = req.query;
+
+    const response = await ProductService.getAllProduct(
+      Number(limit) || 8,
+      Number(page) || 0,
+      sort,
+      filter
+    );
 
     return res.status(200).json(response);
   } catch (err) {
     return res.status(404).json({
-      error: err,
+      error: err.message,
     });
   }
 };
