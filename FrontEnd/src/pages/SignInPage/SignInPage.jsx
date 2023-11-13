@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   WrapperContainerLeft,
   WrapperContainerRight,
@@ -10,8 +10,74 @@ import imageSignIn from "../../assets/images/SignInImage.png";
 import { Image } from "antd";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 
+import { useNavigate } from "react-router-dom";
+import * as UserService from "../../services/UserService";
+import { useMutationHooks } from "../../hooks/useMutationHooks";
+
+import Loading from "../../components/LoadingComponent/Loading";
+import Message from "../../components/Message/Message";
+
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../redux/slides/userSlide";
+
 const SignInPage = () => {
+  const navigate = useNavigate();
+
+  // Call api sign-in
+  const mutation = useMutationHooks((data) => UserService.loginUser(data));
+  const { data, isLoading, isSuccess } = mutation;
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+      // Dang nhap thanh cong luu vao localStorage va access_token
+      localStorage.setItem("access_token", data?.access_token);
+
+      if (data?.access_token) {
+        const decoded = jwtDecode(data?.access_token);
+        console.log("decoded: ", decoded);
+
+        if (decoded?.id) {
+          handleGetDetailUser(decoded.id, data?.access_token);
+        }
+      }
+    }
+  }, [isSuccess]);
+
+  const handleGetDetailUser = async (id, token) => {
+    const res = await UserService.getDetailUser(id, token);
+    dispatch(updateUser({ ...res?.data, access_token: token }));
+    console.log("res: ", res);
+  };
+
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setpassword] = useState("");
+  const dispatch = useDispatch();
+
+  // Set lai email khi nhap
+  const handleOnchangeEmail = (value) => {
+    setEmail(value);
+  };
+
+  // Set lai password khi nhap
+  const handleOnchangePassword = (value) => {
+    setpassword(value);
+  };
+
+  // Chuyen sang trang sing-up
+  const handleNavigateSignUp = () => {
+    navigate("/sign-up");
+  };
+
+  // Btn dang nhap
+  const handleSignIn = () => {
+    mutation.mutate({
+      email,
+      password,
+    });
+  };
   return (
     <div
       style={{
@@ -39,10 +105,13 @@ const SignInPage = () => {
           <InputForm
             style={{ marginBottom: "10px" }}
             placeholder="abc@gmail.com"
+            value={email}
+            onChange={handleOnchangeEmail}
           />
 
           <div style={{ position: "relative" }}>
             <span
+              onClick={() => setIsShowPassword(!isShowPassword)}
               style={{
                 zIndex: 10,
                 position: "absolute",
@@ -56,10 +125,19 @@ const SignInPage = () => {
             <InputForm
               placeholder="Nhập vào mật khẩu"
               type={isShowPassword ? "text" : "password"}
+              value={password}
+              onChange={handleOnchangePassword}
             />
           </div>
 
+          {data?.status === "error" && (
+            <span style={{ color: "red" }}>{data?.message}</span>
+          )}
+
+          {/* <Loading isLoading={isLoading}> */}
           <ButtonComponent
+            disabled={!email.length || !password.length}
+            onClick={handleSignIn}
             size={40}
             styleBtn={{
               background: "rgb(257, 57, 69)",
@@ -71,14 +149,16 @@ const SignInPage = () => {
             textButton={"Đăng nhập"}
             styleText={{ color: "#fff" }}
           ></ButtonComponent>
-
+          {/* </Loading> */}
           <p>
             <WrapperTextLight>Quên mật khẩu</WrapperTextLight>
           </p>
 
           <p>
             Chưa có tài khoản?{" "}
-            <WrapperTextLight>Tạo tài khoản</WrapperTextLight>
+            <WrapperTextLight onClick={handleNavigateSignUp}>
+              Tạo tài khoản
+            </WrapperTextLight>
           </p>
         </WrapperContainerLeft>
 

@@ -4,11 +4,11 @@ const JwtService = require("../services/JwtService");
 // Dang ky
 const createUser = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword, phone } = req.body;
+    const { email, password, confirmPassword } = req.body;
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = reg.test(email);
 
-    if (!name || !email || !password || !confirmPassword || !phone) {
+    if (!email || !password || !confirmPassword) {
       return res.status(200).json({
         status: "error",
         message: "The input is required",
@@ -38,11 +38,11 @@ const createUser = async (req, res) => {
 // Dang nhap
 const loginUser = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword, phone } = req.body;
+    const { email, password } = req.body;
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = reg.test(email);
 
-    if (!name || !email || !password || !confirmPassword || !phone) {
+    if (!email || !password) {
       return res.status(200).json({
         status: "error",
         message: "The input is required",
@@ -52,16 +52,18 @@ const loginUser = async (req, res) => {
         status: "error",
         message: "The input is email",
       });
-    } else if (password !== confirmPassword) {
-      return res.status(200).json({
-        status: "error",
-        message: "The password is equal confirmPassword",
-      });
     }
 
     const response = await UserService.loginUser(req.body);
 
-    return res.status(200).json(response);
+    const { refresh_token, ...newResponses } = response;
+
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true, // Chi lay dc cookie thong qua http
+      Secure: true, // Them nhung bao mat phia client
+    });
+
+    return res.status(200).json(newResponses);
   } catch (err) {
     return res.status(404).json({
       error: err,
@@ -152,7 +154,7 @@ const getDetailUser = async (req, res) => {
 // Refresh token khi access token het han
 const refreshToken = async (req, res) => {
   try {
-    const token = req.headers.token.split(" ")[1];
+    const token = req.cookies.refresh_token;
 
     if (!token) {
       return res.status(200).json({

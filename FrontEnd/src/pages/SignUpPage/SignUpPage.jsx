@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   WrapperContainerLeft,
   WrapperContainerRight,
@@ -10,8 +10,63 @@ import imageSignIn from "../../assets/images/SignInImage.png";
 import { Image } from "antd";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 
+import { useNavigate } from "react-router-dom";
+import * as UserService from "../../services/UserService";
+import { useMutationHooks } from "../../hooks/useMutationHooks";
+
+import Loading from "../../components/LoadingComponent/Loading";
+import Message from "../../components/Message/Message";
+
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
+  // Call api sign-up
+  const mutation = useMutationHooks((data) => UserService.signUpUser(data));
+  const { data, isLoading, isSuccess, isError } = mutation;
+
+  useEffect(() => {
+    if (isSuccess) {
+      Message.success();
+      handleNavigateSignIn();
+    } else if (isError) {
+      Message.error();
+    }
+  }, [isSuccess, isError]);
+
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setpassword] = useState("");
+  const [confirmPassword, setconfirmPassword] = useState("");
+
+  // Set lai email khi nhap
+  const handleOnchangeEmail = (value) => {
+    setEmail(value);
+  };
+
+  // Set lai password khi nhap
+  const handleOnchangePassword = (value) => {
+    setpassword(value);
+  };
+
+  // Set lai confirm password khi nhap
+  const handleOnchangeConfirmPassword = (value) => {
+    setconfirmPassword(value);
+  };
+
+  // Chuyen sang trang sing-in
+  const handleNavigateSignIn = () => {
+    navigate("/sign-in");
+  };
+
+  // Btn dang ky
+  const handleSignUp = () => {
+    mutation.mutate({
+      email,
+      password,
+      confirmPassword,
+    });
+  };
   return (
     <div
       style={{
@@ -34,15 +89,18 @@ const SignUpPage = () => {
         <WrapperContainerLeft>
           <h1>Xin chào</h1>
 
-          <p>Nhập vào form bên dưới để đăng ký tại khoản</p>
+          <p>Nhập vào form bên dưới để đăng ký tài khoản</p>
 
           <InputForm
             style={{ marginBottom: "10px" }}
             placeholder="abc@gmail.com"
+            value={email}
+            onChange={handleOnchangeEmail}
           />
 
           <div style={{ position: "relative" }}>
             <span
+              onClick={() => setIsShowPassword(!isShowPassword)}
               style={{
                 zIndex: 10,
                 position: "absolute",
@@ -57,11 +115,14 @@ const SignUpPage = () => {
               style={{ marginBottom: "10px" }}
               placeholder="Nhập vào mật khẩu"
               type={isShowPassword ? "text" : "password"}
+              value={password}
+              onChange={handleOnchangePassword}
             />
           </div>
 
           <div style={{ position: "relative" }}>
             <span
+              onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
               style={{
                 zIndex: 10,
                 position: "absolute",
@@ -69,16 +130,27 @@ const SignUpPage = () => {
                 right: "8px",
               }}
             >
-              {isShowPassword ? <EyeFilled /> : <EyeInvisibleFilled />}
+              {isShowConfirmPassword ? <EyeFilled /> : <EyeInvisibleFilled />}
             </span>
 
             <InputForm
               placeholder="Xác nhận mật khẩu"
-              type={isShowPassword ? "text" : "password"}
+              type={isShowConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={handleOnchangeConfirmPassword}
             />
           </div>
 
+          {data?.status === "error" && (
+            <span style={{ color: "red" }}>{data?.message}</span>
+          )}
+
+          {/* <Loading isLoading={isLoading}> */}
           <ButtonComponent
+            disabled={
+              !email.length || !password.length || !confirmPassword.length
+            }
+            onClick={handleSignUp}
             size={40}
             styleBtn={{
               background: "rgb(257, 57, 69)",
@@ -90,9 +162,13 @@ const SignUpPage = () => {
             textButton={"Đăng ký"}
             styleText={{ color: "#fff" }}
           ></ButtonComponent>
+          {/* </Loading> */}
 
           <p>
-            Bạn đã có tài khoản? <WrapperTextLight>Đăng nhập</WrapperTextLight>
+            Bạn đã có tài khoản?{" "}
+            <WrapperTextLight onClick={handleNavigateSignIn}>
+              Đăng nhập
+            </WrapperTextLight>
           </p>
         </WrapperContainerLeft>
 

@@ -16,7 +16,7 @@ const authMiddelWare = (req, res, next) => {
     const { payload } = user;
 
     // Neu co chuyen token cua admin (patload.isAdmin) || k chuyen thi them ?
-    if (payload?.isAdmin) {
+    if (user?.isAdmin) {
       next(); // Neu la admin thi di tiep
     } else {
       return res.status(404).json({
@@ -42,7 +42,7 @@ const authUserMiddelWare = (req, res, next) => {
     const { payload } = user;
 
     // Neu co chuyen token cua admin (patload.isAdmin) || k chuyen thi them ?
-    if (payload?.isAdmin || payload?.id === userId) {
+    if (user?.isAdmin || user?.id === userId) {
       next(); // Neu la admin thi di tiep
     } else {
       return res.status(404).json({

@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const routes = require("./routes");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // Chinh sach bao mat cua trinh duyet web, de tranh truy cap vao cac domain khac nhau
 const cors = require("cors");
@@ -14,6 +15,7 @@ const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 routes(app);
 

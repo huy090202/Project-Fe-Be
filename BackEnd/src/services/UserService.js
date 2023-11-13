@@ -14,7 +14,7 @@ const createUser = (newUser) => {
 
       if (checkUser !== null) {
         resolve({
-          status: "Ô sờ kê!",
+          status: "error",
           message: "The email is already!",
         });
       }
