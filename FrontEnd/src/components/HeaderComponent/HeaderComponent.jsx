@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, Col } from "antd";
+import { Badge, Button, Col, Popover } from "antd";
 // import Search from "antd/es/input/Search";
 
 //import css
@@ -8,6 +8,7 @@ import {
   WrapperTextHeader,
   WrapperAccountHeader,
   WrapperTextHeaderSmall,
+  WrapperContentPopup,
 } from "./style";
 
 // import icons
@@ -21,10 +22,14 @@ import {
 import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import * as UserService from "../../services/UserService";
+import { resetUser } from "../../redux/slides/userSlide";
 
 const HeaderComponent = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
 
@@ -33,12 +38,26 @@ const HeaderComponent = () => {
     navigate("/sign-in");
   };
 
+  const handleLogOut = async () => {
+    await UserService.logOutUser();
+    dispatch(resetUser());
+  };
+
+  const content = (
+    <div>
+      <WrapperContentPopup>Thông tin người dùng</WrapperContentPopup>
+      <WrapperContentPopup onClick={handleLogOut}>
+        Đăng xuất
+      </WrapperContentPopup>
+    </div>
+  );
+
   return (
     <div
       style={{
         display: "flex",
         width: "100%",
-        background: "rgb(26, 148, 255",
+        background: "rgb(26, 148, 255)",
         justifyContent: "center",
       }}
     >
@@ -46,6 +65,7 @@ const HeaderComponent = () => {
         <Col span={5}>
           <WrapperTextHeader>DangHuy</WrapperTextHeader>
         </Col>
+
         <Col span={13}>
           <ButtonInputSearch
             size="large"
@@ -55,6 +75,7 @@ const HeaderComponent = () => {
             // onSearch={onSearch}
           />
         </Col>
+
         <Col
           span={6}
           style={{ display: "flex", gap: "54px", alignItems: "center" }}
@@ -62,12 +83,17 @@ const HeaderComponent = () => {
           <WrapperAccountHeader>
             <UserOutlined style={{ fontSize: "30px" }} />
             {user?.name ? (
-              <div style={{ cursor: "pointer" }}>{user.name}</div>
+              <>
+                <Popover content={content} trigger="click">
+                  <div style={{ cursor: "pointer" }}>{user.name}</div>
+                </Popover>
+              </>
             ) : (
               <div onClick={handleNavigateLogin} style={{ cursor: "pointer" }}>
                 <WrapperTextHeaderSmall>
                   Đăng nhập/Đăng ký
                 </WrapperTextHeaderSmall>
+
                 <div>
                   <WrapperTextHeaderSmall>Tài khoản</WrapperTextHeaderSmall>
                   <CaretDownOutlined />
@@ -81,6 +107,7 @@ const HeaderComponent = () => {
                 style={{ fontSize: "30px", color: "#fff" }}
               />
             </Badge>
+
             <WrapperTextHeaderSmall>Giỏ hàng</WrapperTextHeaderSmall>
           </div>
         </Col>

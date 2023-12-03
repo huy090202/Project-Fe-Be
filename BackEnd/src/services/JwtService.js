@@ -8,7 +8,7 @@ const genneralAccessToken = async (payload) => {
       ...payload,
     },
     process.env.ACCESS_TOKEN,
-    { expiresIn: "30s" } // thoi gian token het han 1h
+    { expiresIn: "24h" } // thoi gian token het han 1h
   );
 
   return access_token;
@@ -37,14 +37,10 @@ const refreshTokenJwtService = async (token) => {
           });
         }
 
-        const { payload } = user;
-
         const access_token = await genneralAccessToken({
-          id: payload?.id,
-          isAdmin: payload?.isAdmin,
+          id: user?.id,
+          isAdmin: user?.isAdmin,
         });
-
-        console.log("access_token", access_token);
 
         resolve({
           status: "Ô sờ kê!",

@@ -32,12 +32,10 @@ const SignInPage = () => {
     if (isSuccess) {
       navigate("/");
       // Dang nhap thanh cong luu vao localStorage va access_token
-      localStorage.setItem("access_token", data?.access_token);
+      localStorage.setItem("access_token", JSON.stringify(data?.access_token));
 
       if (data?.access_token) {
         const decoded = jwtDecode(data?.access_token);
-        console.log("decoded: ", decoded);
-
         if (decoded?.id) {
           handleGetDetailUser(decoded.id, data?.access_token);
         }
@@ -48,7 +46,6 @@ const SignInPage = () => {
   const handleGetDetailUser = async (id, token) => {
     const res = await UserService.getDetailUser(id, token);
     dispatch(updateUser({ ...res?.data, access_token: token }));
-    console.log("res: ", res);
   };
 
   const [isShowPassword, setIsShowPassword] = useState(false);
