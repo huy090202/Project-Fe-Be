@@ -30,7 +30,7 @@ function App() {
   };
 
   UserService.axiosJWT.interceptors.request.use(
-    async function (config) {
+    async (config) => {
       const currentTime = new Date();
       const { decoded } = handleDecoded();
       if (decoded?.exp < currentTime.getTime() / 1000) {
@@ -39,7 +39,7 @@ function App() {
       }
       return config;
     },
-    function (error) {
+    (error) => {
       return Promise.reject(error);
     }
   );

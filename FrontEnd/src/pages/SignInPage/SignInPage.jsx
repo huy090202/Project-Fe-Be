@@ -37,7 +37,7 @@ const SignInPage = () => {
       if (data?.access_token) {
         const decoded = jwtDecode(data?.access_token);
         if (decoded?.id) {
-          handleGetDetailUser(decoded.id, data?.access_token);
+          handleGetDetailUser(decoded?.id, data?.access_token);
         }
       }
     }
