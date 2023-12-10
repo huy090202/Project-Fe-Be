@@ -12,13 +12,17 @@ router.post("/sign-in", userController.loginUser);
 
 router.post("/log-out", userController.logoutUser);
 
-router.put("/update-user/:id", userController.updateUser);
+router.put("/update-user/:id", authUserMiddelWare, userController.updateUser);
 
 router.delete("/delete-user/:id", authMiddelWare, userController.deleteUser);
 
 router.get("/getAll-user", authMiddelWare, userController.getAllUser);
 
-router.get("/detai-user/:id", authUserMiddelWare, userController.getDetailUser);
+router.get(
+  "/detail-user/:id",
+  authUserMiddelWare,
+  userController.getDetailUser
+);
 
 router.post("/refresh-token", userController.refreshToken);
 

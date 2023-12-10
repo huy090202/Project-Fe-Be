@@ -8,7 +8,7 @@ const genneralAccessToken = async (payload) => {
       ...payload,
     },
     process.env.ACCESS_TOKEN,
-    { expiresIn: "24h" } // thoi gian token het han 1h
+    { expiresIn: "30s" } // thoi gian token het han
   );
 
   return access_token;
@@ -20,7 +20,7 @@ const genneralRefreshToken = async (payload) => {
       ...payload,
     },
     process.env.REFRESH_TOKEN,
-    { expiresIn: "365d" } // thoi gian refresh token 365 ngay
+    { expiresIn: "365d" } // thoi gian refresh token
   );
 
   return refresh_token;

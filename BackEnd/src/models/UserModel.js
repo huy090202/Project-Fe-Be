@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, require: true },
     isAdmin: { type: Boolean, require: true, default: false }, // xet quyen
     phone: { type: Number },
-    access_token: { type: String, require: true },
-    refresh_token: { type: String, require: true },
+    address: { type: String },
+    avatar: { type: String },
   },
   {
     timestamps: true, // co thoi gian tao va update

@@ -1,7 +1,7 @@
 const UserService = require("../services/UserService");
 const JwtService = require("../services/JwtService");
 
-// Dang ky
+// Sign up
 const createUser = async (req, res) => {
   try {
     const { email, password, confirmPassword } = req.body;
@@ -35,7 +35,7 @@ const createUser = async (req, res) => {
   }
 };
 
-// Dang nhap
+// Sign in
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -153,7 +153,7 @@ const getDetailUser = async (req, res) => {
   }
 };
 
-// Refresh token khi access token het han
+// Refresh token when access token het han
 const refreshToken = async (req, res) => {
   try {
     const token = req.cookies.refresh_token;
