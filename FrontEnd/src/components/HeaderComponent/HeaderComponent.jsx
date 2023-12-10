@@ -1,5 +1,5 @@
-import React from "react";
-import { Badge, Button, Col, Popover } from "antd";
+import React, { useState } from "react";
+import { Badge, Col, Popover } from "antd";
 // import Search from "antd/es/input/Search";
 
 //import css
@@ -26,10 +26,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import * as UserService from "../../services/UserService";
 import { resetUser } from "../../redux/slides/userSlide";
+import Loading from "../LoadingComponent/Loading";
 
 const HeaderComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const user = useSelector((state) => state.user);
 
@@ -39,8 +41,14 @@ const HeaderComponent = () => {
   };
 
   const handleLogOut = async () => {
+    setLoading(true);
+
     await UserService.logOutUser();
     dispatch(resetUser());
+    // Xóa dữ liệu user từ localStorage
+    localStorage.removeItem("access_token");
+
+    setLoading(false);
   };
 
   const content = (
@@ -80,27 +88,30 @@ const HeaderComponent = () => {
           span={6}
           style={{ display: "flex", gap: "54px", alignItems: "center" }}
         >
-          <WrapperAccountHeader>
-            <UserOutlined style={{ fontSize: "30px" }} />
-            {user?.name ? (
-              <>
+          <Loading isLoading={loading}>
+            <WrapperAccountHeader>
+              <UserOutlined style={{ fontSize: "30px" }} />
+              {user?.name ? (
                 <Popover content={content} trigger="click">
                   <div style={{ cursor: "pointer" }}>{user.name}</div>
                 </Popover>
-              </>
-            ) : (
-              <div onClick={handleNavigateLogin} style={{ cursor: "pointer" }}>
-                <WrapperTextHeaderSmall>
-                  Đăng nhập/Đăng ký
-                </WrapperTextHeaderSmall>
+              ) : (
+                <div
+                  onClick={handleNavigateLogin}
+                  style={{ cursor: "pointer" }}
+                >
+                  <WrapperTextHeaderSmall>
+                    Đăng nhập/Đăng ký
+                  </WrapperTextHeaderSmall>
 
-                <div>
-                  <WrapperTextHeaderSmall>Tài khoản</WrapperTextHeaderSmall>
-                  <CaretDownOutlined />
+                  <div>
+                    <WrapperTextHeaderSmall>Tài khoản</WrapperTextHeaderSmall>
+                    <CaretDownOutlined />
+                  </div>
                 </div>
-              </div>
-            )}
-          </WrapperAccountHeader>
+              )}
+            </WrapperAccountHeader>
+          </Loading>
           <div>
             <Badge count={4} size="small">
               <ShoppingCartOutlined
