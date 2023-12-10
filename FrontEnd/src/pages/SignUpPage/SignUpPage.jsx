@@ -160,7 +160,7 @@ const SignUpPage = () => {
               margin: "26px 0 10px",
             }}
             textButton={"Đăng ký"}
-            styleText={{ color: "#fff" }}
+            styleText={{ color: "#fff", fontSize: "15px", fontWeight: "bold" }}
           ></ButtonComponent>
           {/* </Loading> */}
 

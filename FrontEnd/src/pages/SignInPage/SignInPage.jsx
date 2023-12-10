@@ -31,7 +31,7 @@ const SignInPage = () => {
   useEffect(() => {
     if (isSuccess) {
       navigate("/");
-      // Dang nhap thanh cong luu vao localStorage va access_token
+      // Sign in success, saved to localStorage and access_token
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
 
       if (data?.access_token) {
@@ -53,22 +53,22 @@ const SignInPage = () => {
   const [password, setpassword] = useState("");
   const dispatch = useDispatch();
 
-  // Set lai email khi nhap
+  // Set email when enter your text
   const handleOnchangeEmail = (value) => {
     setEmail(value);
   };
 
-  // Set lai password khi nhap
+  // Set password when enter your text
   const handleOnchangePassword = (value) => {
     setpassword(value);
   };
 
-  // Chuyen sang trang sing-up
+  // Go to sign up page
   const handleNavigateSignUp = () => {
     navigate("/sign-up");
   };
 
-  // Btn dang nhap
+  // Btn sign in
   const handleSignIn = () => {
     mutation.mutate({
       email,
@@ -144,7 +144,7 @@ const SignInPage = () => {
               margin: "26px 0 10px",
             }}
             textButton={"Đăng nhập"}
-            styleText={{ color: "#fff" }}
+            styleText={{ color: "#fff", fontSize: "15px", fontWeight: "bold" }}
           ></ButtonComponent>
           {/* </Loading> */}
           <p>

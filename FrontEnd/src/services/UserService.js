@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const axiosJWT = axios.create();
 
-// Dang nhap
+// Sign in
 export const loginUser = async (data) => {
   const res = await axios.post(
     `${process.env.REACT_APP_API_URL}/user/sign-in`,
@@ -11,7 +11,7 @@ export const loginUser = async (data) => {
   return res.data;
 };
 
-// Dang ky
+// Sign up
 export const signUpUser = async (data) => {
   const res = await axios.post(
     `${process.env.REACT_APP_API_URL}/user/sign-up`,
@@ -20,10 +20,10 @@ export const signUpUser = async (data) => {
   return res.data;
 };
 
-// Detail user khi dang nhap thanh cong
+// Detail user when sign in success
 export const getDetailUser = async (id, access_token) => {
   const res = await axiosJWT.get(
-    `${process.env.REACT_APP_API_URL}/user/detai-user/${id}`,
+    `${process.env.REACT_APP_API_URL}/user/detail-user/${id}`,
     {
       headers: {
         token: `Bearer ${access_token}`,
@@ -47,5 +47,19 @@ export const refreshToken = async () => {
 // Log out
 export const logOutUser = async () => {
   const res = await axios.post(`${process.env.REACT_APP_API_URL}/user/log-out`);
+  return res.data;
+};
+
+// Update user
+export const updateUser = async (id, data, access_token) => {
+  const res = await axiosJWT.put(
+    `${process.env.REACT_APP_API_URL}/user/update-user/${id}`,
+    data,
+    {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    }
+  );
   return res.data;
 };
