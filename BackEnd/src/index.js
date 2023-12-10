@@ -14,6 +14,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
+
 // const corsOptions = {
 //   origin: "http://localhost:3000", // Chỉ chấp nhận yêu cầu từ domain này
 //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

@@ -62,6 +62,7 @@ const loginUser = async (req, res) => {
       httpOnly: true, // Chi lay dc cookie thong qua http
       secure: false, // Them nhung bao mat phia client
       sameSite: "strict",
+      path: "/",
     });
 
     return res.status(200).json(newResponses);
@@ -177,7 +178,7 @@ const refreshToken = async (req, res) => {
 // Log out
 const logoutUser = async (req, res) => {
   try {
-    res.clearCookies("refresh_token");
+    res.clearCookie("refresh_token");
 
     return res.status(200).json({
       status: "Ô SỜ KÊ",
@@ -185,7 +186,7 @@ const logoutUser = async (req, res) => {
     });
   } catch (err) {
     return res.status(404).json({
-      error: err,
+      message: err,
     });
   }
 };
