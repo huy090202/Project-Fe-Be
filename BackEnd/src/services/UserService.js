@@ -102,6 +102,8 @@ const updateUser = (id, data) => {
         _id: id,
       });
 
+      console.log("checkUser:", checkUser);
+
       if (checkUser === null) {
         resolve({
           status: "Ô sờ kê!",
@@ -110,6 +112,8 @@ const updateUser = (id, data) => {
       }
 
       const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
+
+      console.log("updatedUser:", updatedUser);
 
       resolve({
         status: "Ô sờ kê!",

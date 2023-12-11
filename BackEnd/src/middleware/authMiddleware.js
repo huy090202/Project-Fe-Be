@@ -5,6 +5,7 @@ dotenv.config();
 // Ham check quyen admin
 const authMiddelWare = (req, res, next) => {
   const token = req.headers.token.split(" ")[1];
+
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     if (err) {
       return res.status(404).json({
@@ -12,8 +13,6 @@ const authMiddelWare = (req, res, next) => {
         status: "ERROR",
       });
     }
-
-    const { payload } = user;
 
     // Neu co chuyen token cua admin (patload.isAdmin) || k chuyen thi them ?
     if (user?.isAdmin) {
@@ -31,6 +30,7 @@ const authMiddelWare = (req, res, next) => {
 const authUserMiddelWare = (req, res, next) => {
   const token = req.headers.token.split(" ")[1];
   const userId = req.params.id;
+
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     if (err) {
       return res.status(404).json({
@@ -38,8 +38,6 @@ const authUserMiddelWare = (req, res, next) => {
         status: "ERROR",
       });
     }
-
-    const { payload } = user;
 
     // Neu co chuyen token cua admin (patload.isAdmin) || k chuyen thi them ?
     if (user?.isAdmin || user?.id === userId) {
